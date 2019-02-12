@@ -17,3 +17,6 @@ test = "cargo test --verbose --all --release"
 build = "cargo build --verbose --all --release"
 
 [dependencies]
+
+[dev-dependencies]
+reqwest = "0.9.9"
