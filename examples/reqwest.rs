@@ -1,7 +1,7 @@
 extern crate reqwest;
 extern crate reventsource;
 
-fn main() -> Result<(), Box<std::error::Error>> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::builder()
         .proxy(reqwest::Proxy::https("http://127.0.0.1:7777")?)
         .timeout(None)
