@@ -8,7 +8,7 @@ pub struct Consumer<T>
 where
     T: Read,
 {
-    response: T,
+    response: Enumerate<Lines<BufReader<T>>>
 }
 
 impl<'a, T> Consumer<T>
@@ -16,17 +16,7 @@ where
     T: Read,
 {
     pub fn new(response: T) -> Self {
-        Consumer { response }
-    }
-
-    pub fn enumerate(&mut self) -> Enumerate<Lines<BufReader<&mut T>>>
-    where
-        T: Read,
-    {
-        let response = self.response.by_ref();
-        let reader = BufReader::new(response);
-
-        reader.lines().enumerate()
+        Consumer { response: BufReader::new(response).lines().enumerate() }
     }
 }
 
@@ -34,13 +24,14 @@ impl<T> Iterator for Consumer<T>
 where
     T: Read,
 {
-    type Item = Result<Event, Box<Error>>;
+    type Item = Result<Event, Box<dyn Error>>;
 
-    fn next(&mut self) -> Option<Result<Event, Box<Error>>> {
+    fn next(&mut self) -> Option<Result<Event, Box<dyn Error>>> {
         let mut event = Event::new();
 
-        for (_num, line) in self.enumerate() {
-            match parse_line(&line.unwrap(), &mut event) {
+        for (_num, line_res) in self.response.by_ref() {
+            let line = line_res.unwrap();
+            match parse_line(&line, &mut event) {
                 EventState::Pending => {}
                 EventState::Ready => {
                     return Some(Ok(event));
