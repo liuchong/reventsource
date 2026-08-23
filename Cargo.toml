@@ -1,22 +1,18 @@
 [package]
 name = "reventsource"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Liu Chong <mail@liuchong.io>"]
-edition = "2018"
+edition = "2024"
+rust-version = "1.85"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/liuchong/reventsource"
 homepage = "https://github.com/liuchong/reventsource"
-description = """
-Rust eventsource implementation.
-"""
+description = "A transport-agnostic Server-Sent Events parser and blocking reader"
 keywords = ["reventsource", "eventsource", "sse"]
+categories = ["network-programming", "parser-implementations"]
+readme = "README.md"
 
 [package.metadata.x]
 lint = "cargo clippy --verbose --all-targets --all-features -- -D warnings"
 test = "cargo test --verbose --all --release"
 build = "cargo build --verbose --all --release"
-
-[dependencies]
-
-[dev-dependencies]
-reqwest = { version = "0.12", features = ["blocking"] }

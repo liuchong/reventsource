@@ -1,36 +1,23 @@
-use std::default::Default;
-use std::fmt::{Display, Formatter, Result};
-
-pub enum EventState {
-    Pending,
-    Ready,
-}
-
-#[derive(Default)]
+/// A message dispatched by a Server-Sent Events stream.
+///
+/// `last_event_id` is the stream's current last-event ID when this event is
+/// dispatched. It can therefore be inherited from an earlier `id` field.
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Event {
+    /// The event payload, with consecutive `data` fields joined by `\n`.
     pub data: String,
-    pub event: Option<String>,
-    pub id: Option<String>,
-    pub retry: Option<String>,
+    /// The event type, or `"message"` when no non-empty `event` field was set.
+    pub event_type: String,
+    /// The stream's last-event ID at dispatch time.
+    pub last_event_id: String,
 }
 
-impl Event {
-    pub fn new() -> Event {
-        Default::default()
-    }
-}
-
-impl Display for Event {
-    fn fmt(&self, f: &mut Formatter) -> Result {
-        if let Some(event) = &self.event {
-            writeln!(f, "event: {}", event)?;
+impl Default for Event {
+    fn default() -> Self {
+        Self {
+            data: String::new(),
+            event_type: "message".to_owned(),
+            last_event_id: String::new(),
         }
-        if let Some(id) = &self.id {
-            writeln!(f, "id: {}", id)?;
-        }
-        if let Some(retry) = &self.retry {
-            writeln!(f, "retry: {}", retry)?;
-        }
-        write!(f, "data: {}", self.data)
     }
 }
