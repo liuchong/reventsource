@@ -2,7 +2,7 @@ use crate::event::{Event, EventState};
 
 pub fn parse_line(line: &str, event: &mut Event) -> EventState {
     // data ends with `\n\n`
-    if line == "" {
+    if line.is_empty() {
         return EventState::Ready;
     }
 

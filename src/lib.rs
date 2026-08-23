@@ -5,6 +5,7 @@ mod event;
 mod parser;
 
 pub use consumer::Consumer;
+pub use event::Event;
 
 pub fn new<T>(response: T) -> Consumer<T>
 where

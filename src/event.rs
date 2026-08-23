@@ -22,15 +22,15 @@ impl Event {
 
 impl Display for Event {
     fn fmt(&self, f: &mut Formatter) -> Result {
-        if self.event.is_some() {
-            writeln!(f, "event: {}", self.event.as_ref().unwrap())?;
+        if let Some(event) = &self.event {
+            writeln!(f, "event: {}", event)?;
         }
-        if self.id.is_some() {
-            writeln!(f, "id: {}", self.id.as_ref().unwrap())?;
+        if let Some(id) = &self.id {
+            writeln!(f, "id: {}", id)?;
         }
-        if self.retry.is_some() {
-            writeln!(f, "retry: {}", self.retry.as_ref().unwrap())?;
+        if let Some(retry) = &self.retry {
+            writeln!(f, "retry: {}", retry)?;
         }
-        write!(f, "data: {}", &self.data)
+        write!(f, "data: {}", self.data)
     }
 }
